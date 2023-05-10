@@ -20,7 +20,7 @@ from homeassistant.helpers import config_validation as cv, entity_platform, serv
 from . import DOMAIN as ALFEN_DOMAIN
 
 from .alfen import AlfenDevice
-from .const import SERVICE_REBOOT_WALLBOX, SERVICE_SET_CURRENT_LIMIT, SERVICE_ENABLE_RFID_AUTHORIZATION_MODE, SERVICE_DISABLE_RFID_AUTHORIZATION_MODE
+from .const import SERVICE_REBOOT_WALLBOX, SERVICE_SET_CURRENT_LIMIT, SERVICE_ENABLE_RFID_AUTHORIZATION_MODE, SERVICE_DISABLE_RFID_AUTHORIZATION_MODE, SERVICE_GET_WALLBOX_DATA
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -78,6 +78,12 @@ async def async_setup_entry(hass, entry, async_add_entities):
         "async_disable_rfid_auth_mode",
     )
 
+    platform.async_register_entity_service(
+        SERVICE_GET_WALLBOX_DATA,
+        {},
+        "async_get_wallbox_data"
+    )
+
 class AlfenMainSensor(Entity):
     def __init__(self, device: AlfenDevice):
         """Initialize the sensor."""
@@ -120,6 +126,9 @@ class AlfenMainSensor(Entity):
 
     async def async_update(self):
         await self._device.async_update()
+
+    async def async_get_wallbox_data(self):
+        await self._device.get_wallbox_data()
 
     @property
     def device_info(self):

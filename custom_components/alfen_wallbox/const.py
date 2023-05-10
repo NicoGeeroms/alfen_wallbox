@@ -6,6 +6,7 @@ KEY_IP = "ip"
 
 TIMEOUT = 60
 
+SERVICE_GET_WALLBOX_DATA = "get_wallbox_data"
 SERVICE_REBOOT_WALLBOX = "reboot_wallbox"
 SERVICE_SET_CURRENT_LIMIT = "set_current_limit"
 SERVICE_ENABLE_RFID_AUTHORIZATION_MODE = "enable_rfid_authorization_mode"

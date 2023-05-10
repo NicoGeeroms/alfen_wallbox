@@ -14,7 +14,7 @@ POST_HEADER_JSON = {'content-type': 'application/json'}
 
 _LOGGER = logging.getLogger(__name__)
 
-MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=30)
+MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=300)
 class AlfenDevice:
 
     def __init__(self, host, name, session, username, password):
@@ -38,7 +38,7 @@ class AlfenDevice:
         self.id = 'alfen_{}'.format(self.info.identity)
         if self.name is None:
             self.name = f'{self.info.identity} ({self.host})'
-        await self.async_update()
+        await self._do_update()
 
     @property
     def status(self):
@@ -60,9 +60,16 @@ class AlfenDevice:
     
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
     async def async_update(self):
+        # Disable auto updates
+        #await self._do_update()
+        pass
+
+    async def get_wallbox_data(self):
+        _LOGGER.debug(f'Get wallbox data triggered.')
         await self._do_update()
 
     async def _do_update(self):
+        _LOGGER.debug(f'do update')
         await self._session.request(ssl=self.ssl, method='POST', headers = HEADER_JSON, url=self.__get_url('login'), json={'username': self.username, 'password': self.password})
         response = await self._session.request(ssl=self.ssl, method='GET', headers = HEADER_JSON, url=self.__get_url('prop?ids=2060_0,2056_0,2221_3,2221_4,2221_5,2221_A,2221_B,2221_C,2221_16,2201_0,2501_2,2221_22,2129_0,2126_0'))
 
@@ -122,7 +129,7 @@ class AlfenDevice:
         response = await self._session.request(ssl=self.ssl, method='POST', headers = POST_HEADER_JSON, url=self.__get_url('prop'), json={'2126_0': {'id': '2126_0', 'value': value}})
         _LOGGER.debug(f'Set RFID Auth Mode {response}')
         await self._session.request(ssl=self.ssl, method='POST', headers = HEADER_JSON, url=self.__get_url('logout'))
-        await self._do_update()        
+        await self._do_update()  
 
     def __get_url(self, action):
         return 'https://{}/api/{}'.format(self.host, action)

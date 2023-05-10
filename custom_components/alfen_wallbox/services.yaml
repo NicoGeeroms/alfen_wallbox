@@ -26,4 +26,11 @@ disable_rfid_authorization_mode:
   fields:
     entity_id:
       description: Name(s) of entities to change.
-      example: "alfen_wallbox.garage"      
+      example: "alfen_wallbox.garage"   
+
+get_wallbox_data:
+  description: Get alfen wallbox data
+  fields:
+    entity_id:
+      description: Name(s) of entities to change.
+      example: "alfen_wallbox.garage"
