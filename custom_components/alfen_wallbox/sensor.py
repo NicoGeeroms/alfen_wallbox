@@ -35,7 +35,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities([
         AlfenMainSensor(device),
         AlfenSensor(device, 'Status Code', 'status'),
-        AlfenSensor(device, 'Uptime', 'uptime', 's'),
+        AlfenSensor(device, 'Uptime', 'uptime', 'h'),
         AlfenSensor(device, 'Bootups', 'bootups'),
         AlfenSensor(device, "Voltage L1", 'voltage_l1', "V"),
         AlfenSensor(device, "Voltage L2", 'voltage_l2', "V"),
