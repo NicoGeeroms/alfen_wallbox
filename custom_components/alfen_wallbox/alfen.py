@@ -142,7 +142,7 @@ class AlfenStatus:
             _LOGGER.debug(prop)
 
             if prop['id'] == '2060_0':
-                self.uptime = max(0, prop['value'] / 1000000 / 3.565)
+                self.uptime = round(max(0, prop['value'] / 1000000 / 3.565), 2)
             elif prop['id'] == '2056_0':
                 self.bootups = prop['value']
             elif prop['id'] == '2221_3':
